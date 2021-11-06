@@ -4,31 +4,52 @@ var timeLeft = 60;
 var headerEl = document.querySelector("#header");
 var questionEl = document.querySelector("#question");
 var answerEl = document.querySelector("#answers");
+var bottomEl = document.querySelector("#bottom");
 var questionsArr = [
-    {title: "Question 1",
-    question: "Question",
-    choices: ["right answer", "wrong-1", "wrong-2", "wrong-3"],
-    answer: 0
+    {
+        question: "Question",
+        answers: [
+            { text: "right answer", correct: true },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false }
+        ]
     },
-    {title: "Question 2",
-    question: "Question",
-    choices: ["wrong-1", "right answer", "wrong-2", "wrong-3"],
-    answer: 1
+    {
+        question: "Question2",
+        answers: [
+            { text: "right answer", correct: true },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false }
+        ]
     },
-    {title: "Question 3",
-    question: "Question",
-    choices: ["wrong-1", "right answer", "wrong-2", "wrong-3"],
-    answer: 1
+    {
+        question: "Question3",
+        answers: [
+            { text: "right answer", correct: true },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false }
+        ]
     },
-    {title: "Question 4",
-    question: "Question",
-    choices: ["wrong-1", "wrong-2", "wrong-3", "right answer"],
-    answer: 3
+    {
+        question: "Question4",
+        answers: [
+            { text: "right answer", correct: true },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false }
+        ]
     },
-    {title: "Question 5",
-    question: "Question",
-    choices: ["wrong-1", "wrong-2", "right answer", "wrong-3"],
-    answer: 2
+    {
+        question: "Question5",
+        answers: [
+            { text: "right answer", correct: true },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false },
+            { text: "wrong-1", correct: false }
+        ]
     },
 ];
 // page appearance on load
@@ -36,19 +57,8 @@ var quizInstructionsEl = document.createElement("div");
 var startBtnEl = document.createElement("button");
 
 // function definitions
-// timer function
-var timer = setInterval(function(){
-    if (timeLeft < 1) {
-        // go to end game state
-        console.log(timeLeft);
-        clearInterval(timer);
-    } else {
-        document.getElementById("countdown").textContent = timeLeft;
-    }
-}, 1000);
-
 // on load state
-var pageLoad = function() {
+var pageLoad = function () {
     // instrucions
     quizInstructionsEl.innerHTML = "<h1 class='title'>JavaScript Quiz</h1><p>directions</p>";
     // start btn
@@ -57,40 +67,86 @@ var pageLoad = function() {
     startBtnEl.textContent = "Start Quiz";
     // append to page
     questionEl.appendChild(quizInstructionsEl);
-    answerEl.appendChild(startBtnEl);
+    bottomEl.appendChild(startBtnEl);
 }
 
 // start quiz
-var startQuiz = function(event) {
-    var quizInstructionsEl = 
+var startQuiz = function (event) {
+    var isStart = event.target;
     // remove insructions & title
-    quizInstructionsEl.remove();
-    startBtnEl.remove();
-    // run quiz & start timer
-    playQuiz();
-    timer();
+    if (isStart.matches(".start-btn")) {
+        quizInstructionsEl.remove();
+        startBtnEl.remove();
+        // run quiz & start timer
+        playQuiz();
+    }
 }
 
-// play the quiz function
-var playQuiz = function(event) {
+// cycle questions
+var cycleQuestions = function (event) {
     var selectedAnswer = event.target;
+
+    // if (event target text content === this object's property answer)
+    if (selectedAnswer.textContent === /* the object currently populating text */.answer) {
+        // move on to next quetion
+    } else if ()
+    // or possibly questionsArr.indexOf(selectedAnswer)
+
+}
+// play the quiz function
+var playQuiz = function () {
+    console.log("you started the quiz!");
+
+    // print question to page
     var quizQuestionEl = document.createElement("p");
     quizQuestionEl.className = "question";
     questionEl.appendChild(quizQuestionEl);
+
+    // print answer choices to page
+    var choiceA = document.createElement("button");
+    var choiceB = document.createElement("button");
+    var choiceC = document.createElement("button");
+    var choiceD = document.createElement("button");
+    choiceA.className = "answer";
+    choiceB.className = "answer";
+    choiceC.className = "answer";
+    choiceD.className = "answer";
+    choiceA.type = "button";
+    choiceB.type = "button";
+    choiceC.type = "button";
+    choiceD.type = "button";
+    answerEl.appendChild(choiceA);
+    answerEl.appendChild(choiceB);
+    answerEl.appendChild(choiceC);
+    answerEl.appendChild(choiceD);
+
+    //let the user know if they got it right or wrong
+    var evaluateAnswer = document.createElement("h2");
+    evaluateAnswer.className = "evaluate";
+    bottomEl.appendChild(evaluateAnswer);
+
     // loop through question array to display each question on click
     for (var i = 0; i < questionsArr.length; i++) {
+        // display first question with choices
+        quizQuestionEl.textContent = questionsArr[i].question;
+        choiceA.textContent = questionsArr[i].choices[0];
+        choiceB.textContent = questionsArr[i].choices[1];
+        choiceC.textContent = questionsArr[i].choices[2];
+        choiceD.textContent = questionsArr[i].choices[3];
 
-    };
-
-    // if click on wrong answer, subtract 10 sec
-    if (selectedAnswer.answer === choices[i]) {
-        console.log("You got it right!");
-    } else {
-        // take 10 sec from timer/score
-        timeLeft = timeLeft - 10;
-        // move to next q
-        return timeLeft;
-    };
+        // if click on wrong answer, subtract 10 sec
+        /* if (selectedAnswer.answer === choices[i]) {
+            console.log("You got it right!");
+            
+            // move on to next q
+        } else {
+            console.log("You got it wrong!");
+            // take 10 sec from timer/score
+            timeLeft = timeLeft - 10;
+            // move to next q
+            return timeLeft;
+        }; */
+    }
 }
 
 // post questions, deduct time, next question
@@ -101,6 +157,8 @@ var playQuiz = function(event) {
 // on load
 pageLoad();
 // listen for start
-answerEl.addEventListener("click", startQuiz);
+answerEl.addEventListener("click", cycleQuestions);
+bottomEl.addEventListener("click", startQuiz);
 // listen for questions
+
 // listen for high scores
