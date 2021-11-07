@@ -25,10 +25,6 @@ body {
 .header {
     margin: 5vh auto;
 }
-.header ul {
-    display: flex;
-    justify-content: space-around;
-}
 
 .header li {
     padding: 1vh;
@@ -109,10 +105,11 @@ footer {
 .score-list {
     width: 100%;
 }
+
 .flex-row {
     display: flex;
     justify-content: space-around;
-
+    margin: auto;
 }
 
 .big-btn {
