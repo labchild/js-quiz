@@ -172,11 +172,10 @@ var endGame = function () {
 var saveHighScores = function () {
     // get user info, save to storage
     var userObj = {
-        name: prompt("You scored " + scoreKeeper + " points! Enter your initials to save your high score."),
+        name: prompt("You scored " + scoreKeeper + " points! Enter your initials to save your score."),
         score: scoreKeeper
     }
     if (!userObj.name) {
-        console.log(userObj.name);
         showHighScores();
     } else {
         highScoreArr = highScoreArr || [];
@@ -225,7 +224,7 @@ var showHighScores = function () {
     }
 }
 
-// print a button 'play again?' that runs page load
+// click on play again btn resets quiz
 var playAgain = function (event) {
     var isPlayAgain = event.target;
     if (isPlayAgain.matches("#play-again")) {
@@ -238,19 +237,21 @@ var playAgain = function (event) {
 
 // timer function
 var displayTimer = function () {
-    // set interval while time left > 0, timeleft = -1 every second
+    // set interval if time left > 0, timeleft = -1 every second
     var timer = setInterval(function () {
-        if (timeLeft <= 0) {
+        if (timeLeft < 0) {
             clearInterval(timer);
             document.getElementById("countdown").innerHTML = "Time's Up!";
             endGame();
         } else {
+            // print time left to countdown el
             document.getElementById("countdown").innerHTML = timeLeft + " seconds remaining";
         }
         timeLeft -= 1;
     }, 1000);
 }
 
+// skip quiz and view high scores
 var viewHighScores = function (event) {
     var clicked = event.target;
     if (clicked.matches(".score-btn")) {
@@ -260,9 +261,6 @@ var viewHighScores = function (event) {
         showHighScores();
     }
 }
-
-// print time left to countdown
-// if time left <= 0, endGame
 
 pageLoad();
 // click start
