@@ -13,7 +13,7 @@ var quizEl = document.querySelector(".quiz")
 var highScoreArr = [];
 var questionsArr = [
     {
-        question: "Which HTML element do you use to link to a JavaScript file?",
+        question: "Which HTML element do you use to connect to an external JavaScript file?",
         answers: [
             { text: "<js>", correct: false },
             { text: "<link>", correct: false },
@@ -22,7 +22,7 @@ var questionsArr = [
         ]
     },
     {
-        question: 'How do you create an alert that reads "Let\'s learn JavaScript!"',
+        question: 'How do you create an alert that reads "Let\'s learn JavaScript!"?',
         answers: [
             { text: 'alert("Let\'s learn JavaScript!")', correct: true },
             { text: 'alertBox("Let\'s learn JavaScript!")', correct: false },
@@ -59,26 +59,24 @@ var questionsArr = [
     },
 ];
 
-function correct() {
-
-}
 // page appearance on load
-var quizInstructionsEl = document.createElement("div");
-
-
 var pageLoad = function () {
     // instrucions
+    var quizInstructionsEl = document.createElement("div");
     quizInstructionsEl.innerHTML =
         "<h1 class='title'>JavaScript Quiz</h1><p>Test your knowledge of basic JavaScript terms!<br>" +
         "You have 60 seconds to answer 5 questions. Watch out! Each wrong answer will knock 10 seconds off the clock.</p>";
     // start btn
     var startBtnEl = document.createElement("button");
-    startBtnEl.className = "btn start-btn";
+    startBtnEl.className = "btn start-btn big-btn";
     startBtnEl.type = "button";
     startBtnEl.textContent = "Start Quiz";
     // append to page
     questionEl.appendChild(quizInstructionsEl);
     bottomEl.appendChild(startBtnEl);
+
+    // load stored high score list to high score array
+    highScoreArr = JSON.parse(localStorage.getItem("highScores"));
 }
 
 // start button is clicked, quiz div clears and questions begin
@@ -103,7 +101,7 @@ var showQuestion = function () {
         questionText.innerText = questionsArr[questionCount].question;
         questionEl.appendChild(questionText);
         questionsArr[questionCount].answers.forEach(answer => {
-            const answerBtn = document.createElement("buttton");
+            const answerBtn = document.createElement("button");
             answerBtn.innerText = answer.text;
             answerBtn.className = "answer-btn btn";
             answerBtn.dataset.correct = answer.correct
@@ -117,8 +115,9 @@ var showQuestion = function () {
 
 // select answer
 var isAnswer = function (event) {
-    debugger;
+    // debugger;
     var selectedAnswer = event.target.getAttribute("data-correct");
+    console.log(selectedAnswer);
     // if click is true display Correct!
     if (JSON.parse(selectedAnswer)) {
         // +10 to score keeper
@@ -127,7 +126,7 @@ var isAnswer = function (event) {
         var grade = document.createElement("h3");
         grade.className = "grade grade-true";
         grade.textContent = "Correct!";
-        bottomEl.appendChild(grade);
+        bottomEl.innerHTML = grade;
         // display grade for 1 sec
         setTimeout(() => {
             bottomEl.remove()
@@ -165,40 +164,48 @@ var endGame = function () {
 var saveHighScores = function () {
     // get user info, save to storage
     var userObj = {
-        name: prompt("You scored" + scoreKeeper + "! Enter your initials to save your high score."),
+        name: prompt("You scored " + scoreKeeper + " points! Enter your initials to save your high score."),
         score: scoreKeeper
     }
-
-    highScoreArr.push(userObj);
-    localStorage.setItem("highScores", JSON.stringify(highScoreArr));
-    showHighScores();
+    // debugger;
+    if (!userObj.name) {
+        console.log(userObj.name);
+        showHighScores();
+    } else {
+        highScoreArr.push(userObj);
+        localStorage.setItem("highScores", JSON.stringify(highScoreArr));
+        showHighScores();
+    }
 }
 
 // print high scores title and info to page
 var showHighScores = function () {
+    // make title
     var scoreTitleEl = document.createElement("h1");
     scoreTitleEl.className = "title";
     scoreTitleEl.textContent = "High Scores";
     questionEl.appendChild(scoreTitleEl);
 
+    // make empty list El for scores
     var highScoreListEl = document.createElement("ul");
     highScoreListEl.className = "score-list";
-    answerEl.appendChild(highScoreListEl);
+    questionEl.appendChild(highScoreListEl);
 
+    // make play again btn
     var playBtnEl = document.createElement("button");
-    playBtnEl.className = "btn play-again";
+    playBtnEl.className = "btn play-again big-btn";
     playBtnEl.id = "play-again";
     playBtnEl.textContent = "Try Again?"
     bottomEl.appendChild(playBtnEl);
 
     var highScores = JSON.parse(localStorage.getItem("highScores"));
     console.log(highScores);
-    // loop to fill list with data from storage obj
+    // loop to fill list El with data from storage obj
     highScores.forEach(score => {
         const scoreListItem = document.createElement("li");
         scoreListItem.className = "flex-row"
-        scoreListItem.innerHTML = 
-        "<p class='user-name'>" + score.name + "</p><p class='user-score'>" + score.score + "</p>";
+        scoreListItem.innerHTML =
+            "<p class='user-name'>" + score.name + "</p><p class='user-score'>" + score.score + "</p>";
         // append to high scores ul el
         highScoreListEl.appendChild(scoreListItem);
     });

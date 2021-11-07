@@ -41,7 +41,7 @@ footer {
 }
 
 .quiz {
-    border: 10px solid var(--transparent);
+    /* border: 7px solid var(--transparent); */
     border-radius: 15px;
     width: 60%;
     margin: auto;
@@ -56,9 +56,9 @@ footer {
 }
 
 .question-container .title {
-    font-size: 2em;
+    font-size: 1.8em;
     margin: 2vh 0;
-    padding-bottom: 2vh;
+    padding: 4vh 2vh;
     border-bottom: var(--underline);
 }
 
@@ -96,4 +96,18 @@ footer {
 .questions {
     border-bottom: var(--underline);
     padding: 2vh;
+    font-weight: normal;
+}
+
+.score-list {
+    width: 100%;
+}
+.flex-row {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.big-btn {
+    padding: 3vh 5vh;
 }
