@@ -16,8 +16,8 @@ A timed quiz to test knowledge of basic JavaScript knowledge. The quiz is contai
 * CSS
 
 ## Download and View
-Check out the quiz at
-You can download the repo and check out my code at
+Check out the quiz at https://labchild.github.io/js-quiz/.
+You can download the repo and check out my code at https://github.com/labchild/js-quiz.
 
 ## Author & Acknowledgements
 Written and deployed by Lelah Bates Childs.
