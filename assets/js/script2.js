@@ -1,5 +1,4 @@
 // assignment code
-// quiz variables for timer, question box El, questions array (of objects)
 var timeLeft;
 var questionCount;
 var gradeTime = 2;
@@ -91,29 +90,29 @@ var pageLoad = function () {
     highScoreArr = JSON.parse(localStorage.getItem("highScores"));
 }
 
-// start button is clicked, quiz div clears and questions begin
+// start button is clicked, start btn disappears, timer starts, and questions begin
 var startQuiz = function (event) {
     var isStart = event.target;
     if (isStart.matches(".start-btn")) {
-        debugger;
         bottomEl.innerHTML = "";
         displayTimer();
         showQuestion();
     }
 }
 
+// cycle through questions function
 var showQuestion = function () {
-
     questionEl.innerHTML = "";
     answerEl.innerHTML = "";
 
-    // if question count < questionsArr.length, else endGame
+    // if question count < questionsArr.length, show question, else endGame
     if (questionCount < questionsArr.length) {
         // populate quiz div with object info from questionsArr
         var questionText = document.createElement("h2");
         questionText.className = "questions";
         questionText.innerText = questionsArr[questionCount].question;
         questionEl.appendChild(questionText);
+        // populate answers div with object info from questionsArr
         questionsArr[questionCount].answers.forEach(answer => {
             const answerBtn = document.createElement("button");
             answerBtn.innerText = answer.text;
@@ -123,33 +122,29 @@ var showQuestion = function () {
             answerEl.appendChild(answerBtn);
         })
     } else {
+        // end timer and end game
         timeLeft = 0;
     }
 }
 
 // select answer
 var isAnswer = function (event) {
-    // debugger;
     questionCount++;
     var selectedAnswer = event.target.getAttribute("data-correct");
-    // if click is true display Correct!
+    // evaluate selected answer
     switch (selectedAnswer) {
+        // if click is true display Correct! and add points to score
         case "true":
-            console.log("grade true!");
-            // +10 to score keeper
             scoreKeeper += 10;
-            // display Correct!
             quizEl.appendChild(gradeTrueEl);
-            // set timeout to remove grade
+            // set timeout to remove grade & cycle
             setTimeout(() => {
                 quizEl.removeChild(gradeTrueEl);
                 showQuestion();
             }, 1000);
             break;
         case "false":
-            console.log(selectedAnswer);
-            console.log("grade false!");
-            // -10 to timeLeft
+            // if click is false display InCorrect! and deduct time
             timeLeft -= 10;
             quizEl.appendChild(gradeFalseEl);
             // set timeout to remove grade
@@ -180,34 +175,32 @@ var saveHighScores = function () {
         name: prompt("You scored " + scoreKeeper + " points! Enter your initials to save your high score."),
         score: scoreKeeper
     }
-    // debugger;
     if (!userObj.name) {
         console.log(userObj.name);
         showHighScores();
     } else {
+        highScoreArr.push(userObj);
         console.log(highScoreArr);
-        // highScoreArr.push(userObj);
         localStorage.setItem("highScores", JSON.stringify(highScoreArr));
         showHighScores();
     }
-    //debugger;
     timeLeft = 0;
 }
 
 // print high scores title and info to page
 var showHighScores = function () {
-    // make title
+    // make title & append
     var scoreTitleEl = document.createElement("h1");
     scoreTitleEl.className = "title";
     scoreTitleEl.textContent = "High Scores";
     questionEl.appendChild(scoreTitleEl);
 
-    // make empty list El for scores
+    // make empty list El for scores & append
     var highScoreListEl = document.createElement("ul");
     highScoreListEl.className = "score-list";
     questionEl.appendChild(highScoreListEl);
 
-    // make play again btn
+    // make play again btn & append
     var playBtnEl = document.createElement("button");
     playBtnEl.className = "btn play-again big-btn";
     playBtnEl.id = "play-again";
