@@ -1,8 +1,7 @@
 // assignment code
 var timeLeft;
 var questionCount;
-var gradeTime = 2;
-var scoreKeeper = 0;
+var scoreKeeper;
 
 var headerEl = document.querySelector("#header");
 var questionEl = document.querySelector("#question");
@@ -85,6 +84,7 @@ var pageLoad = function () {
     bottomEl.appendChild(startBtnEl);
     timeLeft = 60;
     questionCount = 0;
+    scoreKeeper = 0;
 
     // load stored high score list to high score array
     highScoreArr = JSON.parse(localStorage.getItem("highScores"));
@@ -179,6 +179,7 @@ var saveHighScores = function () {
         console.log(userObj.name);
         showHighScores();
     } else {
+        highScoreArr = highScoreArr || [];
         highScoreArr.push(userObj);
         console.log(highScoreArr);
         localStorage.setItem("highScores", JSON.stringify(highScoreArr));
