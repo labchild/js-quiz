@@ -12,10 +12,12 @@
 
 <body>
     <!-- header to hold high scores and timer -->
-    <header id="header">
-        <ul>
+    <header class="header" id="header">
+        <ul class="flex-row">
             <li id="scores">
-                <a href="">View High Scores</a>
+                <button class="btn score-btn big-btn">
+                    View High Scores
+                </button>
             </li>
             <li id="countdown">
                 <!-- put timer here -->
@@ -25,22 +27,26 @@
 
     <!-- main to hold quiz -->
     <main>
-        <!-- create a form to hold questions and mult. choice answers with submit button -->
-        <form class="quiz">
-            <div class="question" id="question">
+        <!-- create a box to hold questions and mult. choice answers with submit button -->
+        <section class="quiz">
+            <div class="question-container container" id="question">
 
             </div>
-            <div class="answers" id="answers">
+            <div class="answer-container container" id="answers">
 
             </div>
-        </form>
+            <div class="bottom-container container" id="bottom">
+                
+            </div>
+        </section>
     </main>
 
     <footer>
         &copy; created by labchild 2021
     </footer>
 
-    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/script2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </body>
 
 </html>
