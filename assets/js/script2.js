@@ -9,7 +9,9 @@ var headerEl = document.querySelector("#header");
 var questionEl = document.querySelector("#question");
 var answerEl = document.querySelector("#answers");
 var bottomEl = document.querySelector("#bottom");
-var quizEl = document.querySelector(".quiz")
+var quizEl = document.querySelector(".quiz");
+var gradeTrueEl = document.querySelector("#grade-true");
+var greadeFalseEl = document.querySelectorAll("#grade-false");
 var highScoreArr = [];
 var questionsArr = [
     {
@@ -84,6 +86,7 @@ var startQuiz = function (event) {
     var isStart = event.target;
     if (isStart.matches(".start-btn")) {
         bottomEl.innerHTML = "";
+        timeLeft = 60;
         displayTimer();
         showQuestion();
     }
@@ -110,7 +113,7 @@ var showQuestion = function () {
             answerEl.appendChild(answerBtn);
         })
     } else {
-        endGame();
+        timeLeft = 0;
     }
 }
 
@@ -120,7 +123,31 @@ var isAnswer = function (event) {
     var selectedAnswer = event.target.getAttribute("data-correct");
     console.log(selectedAnswer);
     // if click is true display Correct!
-    if (JSON.parse(selectedAnswer)) {
+    switch (selectedAnswer) {
+        case "true":
+            console.log(selectedAnswer);
+            // +10 to score keeper
+            scoreKeeper += 10;
+            // display Correct!
+            bottomEl.appendChild(gradeTrueEl);
+            // set timeout to remove grade
+            setTimeout(() => {
+                bottomEl.removeChild(gradeTrueEl);
+            }, 1000);
+            break;
+        case "false":
+            console.log(selectedAnswer);
+            // -10 to timeLeft
+            timeLeft -= 10;
+            var grade = document.createElement("h3");
+            grade.className = "grade grade-false";
+            grade.textContent = "Incorrect!";
+            bottomEl.appendChild(grade);
+            break;
+        default:
+
+    }
+    /* if (selectedAnswer.matches(".data-correct='true'")) {
         // +10 to score keeper
         scoreKeeper += 10;
         // display Correct!
@@ -145,7 +172,12 @@ var isAnswer = function (event) {
         setTimeout(() => {
             bottomEl.remove()
         }, 1000);
-    }
+    } */
+    setTimeout(() => {
+        gradeCorrect.classList.remove("show");
+        gradeCorrect.classList.add("hide");
+    }, 1000);
+
     console.log(scoreKeeper);
     console.log(timeLeft);
     questionCount++;
@@ -157,6 +189,7 @@ var endGame = function () {
     questionEl.innerHTML = "";
     answerEl.innerHTML = "";
     bottomEl.innerHTML = "";
+    document.getElementById("countdown").innerHTML = "";
 
     saveHighScores();
 }
@@ -199,7 +232,7 @@ var showHighScores = function () {
     var playBtnEl = document.createElement("button");
     playBtnEl.className = "btn play-again big-btn";
     playBtnEl.id = "play-again";
-    playBtnEl.textContent = "Try Again?"
+    playBtnEl.textContent = "Try Again"
     bottomEl.appendChild(playBtnEl);
 
     if (!highScoreArr) {
@@ -236,13 +269,23 @@ var displayTimer = function () {
     var timer = setInterval(function () {
         if (timeLeft <= 0) {
             clearInterval(timer);
-            document.getElementById("countdown").innerHTML = "Finished";
+            document.getElementById("countdown").innerHTML = "Time's Up!";
             endGame();
         } else {
             document.getElementById("countdown").innerHTML = timeLeft + " seconds remaining";
         }
         timeLeft -= 1;
     }, 1000);
+}
+
+var viewHighScores = function (event) {
+    var clicked = event.target;
+    if (clicked.matches(".score-btn")) {
+        questionEl.innerHTML = "";
+        answerEl.innerHTML = "";
+        bottomEl.innerHTML = "";
+        showHighScores();
+    }
 }
 
 // print time left to countdown
@@ -255,3 +298,5 @@ bottomEl.addEventListener("click", startQuiz);
 answerEl.addEventListener("click", isAnswer);
 // play again
 bottomEl.addEventListener("click", playAgain);
+// view high scores button
+headerEl.addEventListener("click", viewHighScores)
