@@ -122,21 +122,15 @@ footer {
 .grade {
     font-weight: normal;
     font-style: italic;
-    opacity: 0.7;
+    text-align: right;
+    padding: 2vh;
+    
 }
 
-.grade-fasle {
-    color: #f00;
+#grade-false {
+    color: rgba(255, 0, 0, 0.7);
 }
 
-.grade-true {
-    color: #080;
-}
-
-.hide {
-    display: none;
-}
-
-.show {
-    display: inline-block;
+#grade-true {
+    color: rgba(0, 195, 0, 0.7);
 }

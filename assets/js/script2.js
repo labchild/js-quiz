@@ -1,6 +1,6 @@
 // assignment code
 // quiz variables for timer, question box El, questions array (of objects)
-var timeLeft = 60;
+var timeLeft;
 var questionCount = 0;
 var gradeTime = 2;
 var scoreKeeper = 0;
@@ -10,8 +10,16 @@ var questionEl = document.querySelector("#question");
 var answerEl = document.querySelector("#answers");
 var bottomEl = document.querySelector("#bottom");
 var quizEl = document.querySelector(".quiz");
-var gradeTrueEl = document.querySelector("#grade-true");
-var greadeFalseEl = document.querySelectorAll("#grade-false");
+
+var gradeTrueEl = document.createElement("h3");
+gradeTrueEl.className = "grade";
+gradeTrueEl.id = "grade-true";
+gradeTrueEl.textContent = "Correct!";
+var gradeFalseEl = document.createElement("h3");
+gradeFalseEl.className = "grade";
+gradeFalseEl.id = "grade-false";
+gradeFalseEl.textContent = "Incorrect!";
+
 var highScoreArr = [];
 var questionsArr = [
     {
@@ -76,6 +84,7 @@ var pageLoad = function () {
     // append to page
     questionEl.appendChild(quizInstructionsEl);
     bottomEl.appendChild(startBtnEl);
+    timeLeft = 60;
 
     // load stored high score list to high score array
     highScoreArr = JSON.parse(localStorage.getItem("highScores"));
@@ -85,8 +94,8 @@ var pageLoad = function () {
 var startQuiz = function (event) {
     var isStart = event.target;
     if (isStart.matches(".start-btn")) {
+        debugger;
         bottomEl.innerHTML = "";
-        timeLeft = 60;
         displayTimer();
         showQuestion();
     }
@@ -120,33 +129,38 @@ var showQuestion = function () {
 // select answer
 var isAnswer = function (event) {
     // debugger;
+    questionCount++;
     var selectedAnswer = event.target.getAttribute("data-correct");
-    console.log(selectedAnswer);
     // if click is true display Correct!
     switch (selectedAnswer) {
         case "true":
-            console.log(selectedAnswer);
+            console.log("grade true!");
             // +10 to score keeper
             scoreKeeper += 10;
             // display Correct!
-            bottomEl.appendChild(gradeTrueEl);
+            quizEl.appendChild(gradeTrueEl);
             // set timeout to remove grade
             setTimeout(() => {
-                bottomEl.removeChild(gradeTrueEl);
+                quizEl.removeChild(gradeTrueEl);
+                showQuestion();
             }, 1000);
             break;
         case "false":
             console.log(selectedAnswer);
+            console.log("grade false!");
             // -10 to timeLeft
             timeLeft -= 10;
-            var grade = document.createElement("h3");
-            grade.className = "grade grade-false";
-            grade.textContent = "Incorrect!";
-            bottomEl.appendChild(grade);
+            quizEl.appendChild(gradeFalseEl);
+            // set timeout to remove grade
+            setTimeout(() => {
+                quizEl.removeChild(gradeFalseEl);
+                showQuestion();
+            }, 1000);
             break;
         default:
-
+            console.log("No button clicked");
     }
+    
     /* if (selectedAnswer.matches(".data-correct='true'")) {
         // +10 to score keeper
         scoreKeeper += 10;
@@ -173,15 +187,8 @@ var isAnswer = function (event) {
             bottomEl.remove()
         }, 1000);
     } */
-    setTimeout(() => {
-        gradeCorrect.classList.remove("show");
-        gradeCorrect.classList.add("hide");
-    }, 1000);
-
     console.log(scoreKeeper);
     console.log(timeLeft);
-    questionCount++;
-    showQuestion();
 }
 
 // end game, clear div, call high scores
