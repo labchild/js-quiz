@@ -84,6 +84,7 @@ var startQuiz = function (event) {
     var isStart = event.target;
     if (isStart.matches(".start-btn")) {
         bottomEl.innerHTML = "";
+        displayTimer();
         showQuestion();
     }
 }
@@ -172,10 +173,13 @@ var saveHighScores = function () {
         console.log(userObj.name);
         showHighScores();
     } else {
-        highScoreArr.push(userObj);
+        console.log(highScoreArr);
+        // highScoreArr.push(userObj);
         localStorage.setItem("highScores", JSON.stringify(highScoreArr));
         showHighScores();
     }
+    //debugger;
+    timeLeft = 0;
 }
 
 // print high scores title and info to page
@@ -198,17 +202,21 @@ var showHighScores = function () {
     playBtnEl.textContent = "Try Again?"
     bottomEl.appendChild(playBtnEl);
 
-    var highScores = JSON.parse(localStorage.getItem("highScores"));
-    console.log(highScores);
-    // loop to fill list El with data from storage obj
-    highScores.forEach(score => {
-        const scoreListItem = document.createElement("li");
-        scoreListItem.className = "flex-row"
-        scoreListItem.innerHTML =
-            "<p class='user-name'>" + score.name + "</p><p class='user-score'>" + score.score + "</p>";
-        // append to high scores ul el
-        highScoreListEl.appendChild(scoreListItem);
-    });
+    if (!highScoreArr) {
+        answerEl.innerHTML = "<p class='messege'>No scores have been saved yet.</p>";
+    } else {
+        var highScores = JSON.parse(localStorage.getItem("highScores"));
+        console.log(highScores);
+        // loop to fill list El with data from storage obj
+        highScores.forEach(score => {
+            const scoreListItem = document.createElement("li");
+            scoreListItem.className = "flex-row"
+            scoreListItem.innerHTML =
+                "<p class='user-name'>" + score.name + "</p><p class='user-score'>" + score.score + "</p>";
+            // append to high scores ul el
+            highScoreListEl.appendChild(scoreListItem);
+        });
+    }
 }
 
 // print a button 'play again?' that runs page load
@@ -223,7 +231,20 @@ var playAgain = function (event) {
 }
 
 // timer function
-// set interval while time left > 0, timeleft = -1 every second
+var displayTimer = function () {
+    // set interval while time left > 0, timeleft = -1 every second
+    var timer = setInterval(function () {
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            document.getElementById("countdown").innerHTML = "Finished";
+            endGame();
+        } else {
+            document.getElementById("countdown").innerHTML = timeLeft + " seconds remaining";
+        }
+        timeLeft -= 1;
+    }, 1000);
+}
+
 // print time left to countdown
 // if time left <= 0, endGame
 
