@@ -123,7 +123,7 @@ var showQuestion = function () {
         })
     } else {
         // end timer and end game
-        timeLeft = 0;
+        endGame();
     }
 }
 
@@ -144,7 +144,7 @@ var isAnswer = function (event) {
             }, 1000);
             break;
         case "false":
-            // if click is false display InCorrect! and deduct time
+            // if click is false display Incorrect! and deduct time
             timeLeft -= 10;
             quizEl.appendChild(gradeFalseEl);
             // set timeout to remove grade
@@ -164,8 +164,8 @@ var endGame = function () {
     answerEl.innerHTML = "";
     bottomEl.innerHTML = "";
     document.getElementById("countdown").innerHTML = "";
-
     saveHighScores();
+    timeLeft = 0;
 }
 
 // get user info & show high scores
@@ -184,7 +184,6 @@ var saveHighScores = function () {
         localStorage.setItem("highScores", JSON.stringify(highScoreArr));
         showHighScores();
     }
-    timeLeft = 0;
 }
 
 // print high scores title and info to page
@@ -241,8 +240,7 @@ var displayTimer = function () {
     var timer = setInterval(function () {
         if (timeLeft < 0) {
             clearInterval(timer);
-            document.getElementById("countdown").innerHTML = "Time's Up!";
-            endGame();
+            document.getElementById("countdown").innerHTML = "";
         } else {
             // print time left to countdown el
             document.getElementById("countdown").innerHTML = timeLeft + " seconds remaining";
@@ -251,7 +249,7 @@ var displayTimer = function () {
     }, 1000);
 }
 
-// skip quiz and view high scores
+// skip quiz and view scores
 var viewHighScores = function (event) {
     var clicked = event.target;
     if (clicked.matches(".score-btn")) {
