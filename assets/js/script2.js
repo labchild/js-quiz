@@ -1,7 +1,7 @@
 // assignment code
 // quiz variables for timer, question box El, questions array (of objects)
 var timeLeft;
-var questionCount = 0;
+var questionCount;
 var gradeTime = 2;
 var scoreKeeper = 0;
 
@@ -85,6 +85,7 @@ var pageLoad = function () {
     questionEl.appendChild(quizInstructionsEl);
     bottomEl.appendChild(startBtnEl);
     timeLeft = 60;
+    questionCount = 0;
 
     // load stored high score list to high score array
     highScoreArr = JSON.parse(localStorage.getItem("highScores"));
@@ -160,35 +161,6 @@ var isAnswer = function (event) {
         default:
             console.log("No button clicked");
     }
-    
-    /* if (selectedAnswer.matches(".data-correct='true'")) {
-        // +10 to score keeper
-        scoreKeeper += 10;
-        // display Correct!
-        var grade = document.createElement("h3");
-        grade.className = "grade grade-true";
-        grade.textContent = "Correct!";
-        bottomEl.innerHTML = grade;
-        // display grade for 1 sec
-        setTimeout(() => {
-            bottomEl.remove()
-        }, 1000);
-    }
-    // if click is false display Wrong! then clear div
-    else if (!JSON.parse(selectedAnswer)) {
-        // -10 to timeLeft
-        timeLeft -= 10;
-        var grade = document.createElement("h3");
-        grade.className = "grade grade-false";
-        grade.textContent = "Incorrect!";
-        bottomEl.appendChild(grade);
-        // display grade for 1 sec
-        setTimeout(() => {
-            bottomEl.remove()
-        }, 1000);
-    } */
-    console.log(scoreKeeper);
-    console.log(timeLeft);
 }
 
 // end game, clear div, call high scores
